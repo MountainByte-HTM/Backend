@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Search</title>
+</head>
+<body>
+    <h1>Search for Books by Author</h1>
+    <form action="/search" method="post">
+        <label for="author">Author Name:</label>
+        <input type="text" id="author" name="author" required>
+        <button type="submit">Search</button>
+    </form>
+    <hr>
+    {% if books %}
+        <h2>Results:</h2>
+        <ul>
+            {% for book in books %}
+                <li>
+                    <strong>{{ book.volumeInfo.title }}</strong>
+                    
+                    
+                    {% if book.volumeInfo.imageLinks and book.volumeInfo.imageLinks.thumbnail %}
+                        <br><img src="{{ book.volumeInfo.imageLinks.thumbnail }}" alt="Book cover of {{ book.volumeInfo.title }}">
+                    {% endif %}
+
+                    {% if book.volumeInfo.volumeNumber %}
+                        <br>Volume Number: {{ book.volumeInfo.volumeNumber }}
+                    {% endif %}
+                    
+                    {% if book.volumeInfo.seriesInfo %}
+                        <br>Series Number: {{ book.volumeInfo.seriesInfo.volumeOrder }}
+                    {% endif %}
+                    
+                    {% if book.volumeInfo.industryIdentifiers %}
+                        <br>ISBN: {{ book.volumeInfo.industryIdentifiers[0].identifier }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif error %}
+        <p>{{ error }}</p>
+    {% endif %}
+</body>
+</html>
